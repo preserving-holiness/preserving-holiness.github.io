@@ -27,14 +27,16 @@ AUTHOR_FEED_RSS = None
 DEFAULT_PAGINATION = 10
 
 # Uncomment following line if you want document-relative URLs when developing
-#RELATIVE_URLS = True
+RELATIVE_URLS = True
 
 THEME = 'themes/cebong'
 
 MENUITEMS = (('Home', '/'),
-             ('About Us', '/pages/about-us.html'),)
+             ('About Us', '/pages/about-us.html'),
+             ('Our Mission', '/pages/our-mission.html'),)
 
 DISPLAY_PAGES_ON_MENU = False
+DISPLAY_CATEGORIES_ON_MENU = False
 
 PLUGIN_PATHS = ['plugins']
 PLUGINS = ['share_post']
