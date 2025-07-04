@@ -59,10 +59,10 @@ def preview(c):
 def deploy(c):
     "Build the site for production and push to GitHub Pages"
     c.run("pelican -s publishconf.py")
-    c.run("ghp-import -b main -m 'Update site' -p -f output")
+    c.run('ghp-import output -b main -m "Update site" -p -f')
     print("--> Site deployed to main branch on GitHub.")
     c.run("git add .")
-    c.run("git commit -m 'Update source code'")
+    c.run('git commit -m "Update source code"')
     c.run("git push origin source")
     print("--> Source code pushed to source branch on GitHub.")
 
