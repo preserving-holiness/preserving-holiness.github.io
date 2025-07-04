@@ -1,0 +1,15 @@
+# Pelican build output and cache
+/output/
+/cache/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Cloned theme and plugin repositories
+# (manage these separately, e.g., with submodules, if needed)
+/themes/
+/plugins/
+
+# OS-specific files
+.DS_Store 
