@@ -3,7 +3,10 @@ Date: 2024-07-29 18:14
 
 Our mission on this tiny blog is to bring the best of Old-Time Fire and Brimstone preaching to a modern, but no less carnal, audience. We utilize the best of leading edge technologies in AI to bring you the most unbiased, most poignant renderings of the documents of the past which hold our truth for the world, though sometimes harder for our modern audience, or even our youths or gradeschool children to understand.
 
-There is a wild, untamed wilderness on the internet known as Reddit, a forum site of sorts, where people often ask others to "Explain X topic to me like I'm five years old". Those of us who regularly read and understand the King James Version of the Bible take for granted the amount of archaic English literature we are consuming on a daily basis, and therefore, our comfort level with the Thesaurus. To illustrate my point, let me give you some chilling facts about literacy in the United States straight from Gemini 2.5 Pro (Google's Head-of-Pack AI).
+There is a wild, untamed wilderness on the internet known as Reddit, a forum site of sorts, where people often ask others to "Explain X topic to me like I'm five years old". Those of us who regularly read and understand the King James Version of the Bible take for granted the amount of archaic English literature we are consuming on a daily basis, and therefore, our comfort level with the Thesaurus. 
+
+
+To **illustrate my point**, let me give you some chilling facts about literacy in the United States straight from Gemini 2.5 Pro (Google's Head-of-Pack AI). Note: These results were collected by an AI, not a human.
 
 ### Literacy and the US
 
