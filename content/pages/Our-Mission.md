@@ -1,5 +1,5 @@
 Title: Our Mission
-Date: 2024-07-29 18:14
+Date: 2025-07-04 18:14
 
 Our mission on this tiny blog is to bring the best of Old-Time Fire and Brimstone preaching to a modern, but no less carnal, audience. We utilize the best of leading edge technologies in AI to bring you the most unbiased, most poignant renderings of the documents of the past which hold our truth for the world, though sometimes harder for our modern audience, or even our youths or gradeschool children to understand.
 

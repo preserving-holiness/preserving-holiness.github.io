@@ -1,5 +1,5 @@
 Title: About Us
-Date: 2024-07-29 10:00
+Date: 2025-07-04 10:00
 Slug: about-us
 
 We are an independant, non-denominational consortium of Believers in the doctrine of the Second Work of Grace, as delivered to the pen of one, John Wesley (1703-1791). We preserve the message for its modern audience, to keep true Spiritual Freedom alive in our world.
