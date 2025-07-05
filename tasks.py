@@ -7,6 +7,7 @@ import os
 import shutil
 import sys
 import webbrowser
+from datetime import datetime
 
 # --- Configuration ---
 CONFIG = {
@@ -17,7 +18,104 @@ CONFIG = {
     "pelican_binary": "pelican",
     "pelican_conf": "pelicanconf.py",
     "publish_conf": "publishconf.py",
+    "article_summaries_path": Path(r"f:\Article Summaries"),
 }
+
+def get_metadata_from_user(file_content):
+    """Prompt user for metadata if not found in file."""
+    metadata = {}
+    lines = file_content.splitlines()
+
+    # Simple check for existing metadata block
+    existing_metadata = {}
+    if lines and ":" in lines[0]:
+        for line in lines:
+            if ":" in line:
+                key, value = line.split(":", 1)
+                existing_metadata[key.strip().lower()] = value.strip()
+            else:
+                break
+
+    # Title
+    if "title" not in existing_metadata:
+        metadata["Title"] = input("Enter Title: ")
+    else:
+        metadata["Title"] = existing_metadata["title"]
+
+    # Date
+    metadata["Date"] = datetime.now().strftime("%Y-%m-%d %H:%M")
+
+    # Category
+    if "category" not in existing_metadata:
+        metadata["Category"] = input("Enter Category: ")
+    else:
+        metadata["Category"] = existing_metadata["category"]
+
+    # Tags
+    if "tags" not in existing_metadata:
+        metadata["Tags"] = input("Enter Tags (comma-separated): ")
+    else:
+        metadata["Tags"] = existing_metadata["tags"]
+
+    # Author
+    if "author" not in existing_metadata:
+        metadata["Author"] = input("Enter Author: ")
+    else:
+        metadata["Author"] = existing_metadata["author"]
+
+    # Summary
+    if "summary" not in existing_metadata:
+        summary_lines = []
+        for line in lines:
+            if line.startswith("##"):
+                break
+            if line.strip() and not line.startswith("#"):
+                summary_lines.append(line.strip())
+        if summary_lines:
+             metadata["Summary"] = " ".join(summary_lines)[:150] # Take a portion as summary
+        else:
+            metadata["Summary"] = input("Enter Summary: ")
+    else:
+        metadata["Summary"] = existing_metadata["summary"]
+
+    return metadata
+
+@task
+def post(c):
+    """Post the next article from the summaries folder with metadata."""
+    src_path = CONFIG["article_summaries_path"]
+    dst_path = CONFIG["content_path"] / "posts"
+
+    src_files = sorted([p for p in src_path.glob("*.md") if p.name != "processed_files.log"])
+    dst_files = [p.name for p in dst_path.glob("*.md")]
+
+    next_post_path = None
+    for src_file in src_files:
+        if src_file.name not in dst_files:
+            next_post_path = src_file
+            break
+
+    if next_post_path:
+        with open(next_post_path, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        metadata = get_metadata_from_user(content)
+        metadata_str = "\n".join([f"{k}: {v}" for k, v in metadata.items()])
+        
+        # Remove existing h1 if present, as Title metadata will replace it
+        content_lines = content.splitlines()
+        if content_lines and content_lines[0].startswith("# "):
+            content = "\n".join(content_lines[1:]).lstrip()
+
+        new_content = f"{metadata_str}\n\n{content}"
+
+        target_file = dst_path / next_post_path.name
+        with open(target_file, "w", encoding="utf-8") as f:
+            f.write(new_content)
+
+        print(f"--> Successfully posted '{next_post_path.name}' to {target_file}")
+    else:
+        print("--> No new articles to post.")
 
 @task
 def clean(c):
