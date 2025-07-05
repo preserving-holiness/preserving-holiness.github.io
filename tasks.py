@@ -86,15 +86,8 @@ def post(c):
     src_path = CONFIG["article_summaries_path"]
     dst_path = CONFIG["content_path"] / "posts"
 
-    print(f"Checking for summaries in: {src_path}")
-    print(f"Does the path exist? {src_path.exists()}")
-    print(f"Is it a directory? {src_path.is_dir()}")
-
     src_files = sorted([p for p in src_path.glob("*.md") if p.name != "processed_files.log"])
     dst_files = [p.name for p in dst_path.glob("*.md")]
-
-    print("Source files found:", [p.name for p in src_files])
-    print("Destination files found:", dst_files)
 
     next_post_path = None
     for src_file in src_files:
