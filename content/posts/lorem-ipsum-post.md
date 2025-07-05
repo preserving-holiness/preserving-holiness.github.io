@@ -1,5 +1,6 @@
 Title: Lorem Ipsum Dolor Sit Amet
 Date: 2024-07-30 10:00
+Status: hidden
 Category: Sample Posts
 Tags: lorem ipsum, sample, test
 Author: nameless

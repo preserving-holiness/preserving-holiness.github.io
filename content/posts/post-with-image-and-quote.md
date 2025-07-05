@@ -1,5 +1,6 @@
 Title: A Post with an Image and a Quote
 Date: 2024-07-30 11:00
+Status: hidden
 Category: Sample Posts
 Tags: image, blockquote, sample
 Author: nameless
