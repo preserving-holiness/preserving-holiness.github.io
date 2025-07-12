@@ -1,5 +1,5 @@
 Title: [Who Is the Holy Spirit?]
-Date: 2025-07-09 HH:MM
+Date: 2025-07-09 00:00
 Status: published
 Category: Books
 Tags: Book-Summaries, Books, Chapter-Summaries
