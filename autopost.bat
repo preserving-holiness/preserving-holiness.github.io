@@ -5,4 +5,5 @@ cd /d "%~dp0"
 echo Running autopost command...
 invoke autopost
 echo.
-echo Autopost command finished. 
+echo Autopost command finished.
+pause 
