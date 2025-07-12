@@ -19,6 +19,7 @@ CONFIG = {
     "pelican_conf": "pelicanconf.py",
     "publish_conf": "publishconf.py",
     "article_summaries_path": Path(r"f:\Article Summaries"),
+    "articles_ready_path": Path(r"f:\Articles Ready"),
 }
 
 def get_metadata_from_user(file_content):
@@ -116,6 +117,39 @@ def post(c):
         print(f"--> Successfully posted '{next_post_path.name}' to {target_file}")
     else:
         print("--> No new articles to post.")
+
+
+@task
+def autopost(c):
+    """Post the next numbered article and deploy the site."""
+    src_path = CONFIG["articles_ready_path"]
+    dst_path = CONFIG["content_path"] / "posts"
+
+    if not src_path.exists() or not src_path.is_dir():
+        print(f"--> Error: The 'articles ready' directory was not found at '{src_path}'")
+        return
+
+    # Get source files and sort them numerically based on their names
+    src_files = sorted(
+        [p for p in src_path.glob("*.md")],
+        key=lambda p: int("".join(filter(str.isdigit, p.stem)) or 0)
+    )
+    dst_files = [p.name for p in dst_path.glob("*.md")]
+
+    next_post_path = None
+    for src_file in src_files:
+        if src_file.name not in dst_files:
+            next_post_path = src_file
+            break
+
+    if next_post_path:
+        shutil.copy(next_post_path, dst_path)
+        print(f"--> Successfully posted '{next_post_path.name}' to {dst_path}")
+        print("--> Deploying site...")
+        deploy(c)
+    else:
+        print("--> No new articles to post automatically.")
+
 
 @task
 def clean(c):

@@ -1,0 +1,22 @@
+{
+    "last_open_dir": "F:/Articles",
+    "last_save_dir": "F:/Articles Ready",
+    "profiles": {
+        "Bible Studies": {
+            "category": "Bible Studies",
+            "tags": [
+                "Bible-Studies",
+                "Word-Studies"
+            ]
+        },
+        "Book Chapters": {
+            "category": "Books",
+            "tags": [
+                "Book-Summaries",
+                "Books",
+                "Chapter-Summaries"
+            ]
+        }
+    },
+    "default_author": "A W Tozer and ChatGPT"
+}
