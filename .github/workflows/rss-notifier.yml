@@ -1,0 +1,84 @@
+name: Check RSS Feed and Notify
+
+# Run this workflow every hour
+on:
+  schedule:
+    - cron: '0 * * * *'
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  check-and-notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check for new post in RSS feed
+        id: feed_check
+        run: |
+          # The URL of your live RSS feed
+          RSS_FEED_URL="https://preserving-holiness.github.io/feeds/all.atom.xml"
+
+          # Use curl to fetch the latest post's <id> (a unique URL in Atom feeds)
+          LATEST_POST_ID=$(curl -s "$RSS_FEED_URL" | grep -oP '<id>.*?</id>' | head -n 2 | tail -n 1)
+          
+          # Read the ID of the last post we notified for
+          if [[ -f last_post_id.txt ]]; then
+            LAST_SENT_ID=$(cat last_post_id.txt)
+          else
+            LAST_SENT_ID=""
+          fi
+
+          echo "Latest post ID on feed: $LATEST_POST_ID"
+          echo "Last sent post ID: $LAST_SENT_ID"
+
+          # If the latest post is different from the last one sent...
+          if [[ "$LATEST_POST_ID" != "$LAST_SENT_ID" ]]; then
+            echo "New post found! Preparing to send email."
+            echo "new_post_found=true" >> $GITHUB_OUTPUT
+            echo "latest_post_id=$LATEST_POST_ID" >> $GITHUB_OUTPUT
+            
+            # Extract title and link for the email body
+            LATEST_POST_CONTENT=$(curl -s "$RSS_FEED_URL" | grep -E '<title>|<link rel="alternate" type="text/html"' | head -n 3)
+            LATEST_TITLE=$(echo "$LATEST_POST_CONTENT" | grep -oP '<title>.*?</title>' | sed -e 's/<[^>]*>//g' | head -n 1)
+            LATEST_LINK=$(echo "$LATEST_POST_CONTENT" | grep -oP 'href="\K[^"]+' | head -n 1)
+
+            echo "post_title=$LATEST_TITLE" >> $GITHUB_OUTPUT
+            echo "post_link=$LATEST_LINK" >> $GITHUB_OUTPUT
+          else
+            echo "No new post found."
+            echo "new_post_found=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Send notification email
+        # Only run this step if the 'feed_check' step found a new post
+        if: steps.feed_check.outputs.new_post_found == 'true'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ secrets.MAIL_SERVER }}
+          server_port: ${{ secrets.MAIL_PORT }}
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: 'New Post on Preserving Holiness: ${{ steps.feed_check.outputs.post_title }}'
+          body: |
+            A new post has been published!
+
+            Title: ${{ steps.feed_check.outputs.post_title }}
+            Link: ${{ steps.feed_check.outputs.post_link }}
+            
+            Enjoy the read!
+          to: preserving-holiness@gmail.com # The address you want to send the notification TO
+          from: GitHub Actions Notifier <${{ secrets.MAIL_USERNAME }}> # The "From" name and address
+
+      - name: Update last post ID file
+        # Only run this step if an email was sent
+        if: steps.feed_check.outputs.new_post_found == 'true'
+        run: |
+          echo "Updating last_post_id.txt with the new ID."
+          echo "${{ steps.feed_check.outputs.latest_post_id }}" > last_post_id.txt
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add last_post_id.txt
+          git commit -m "Update last processed RSS post ID"
+          git push
