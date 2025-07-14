@@ -33,7 +33,8 @@ THEME = 'themes/cebong'
 
 MENUITEMS = (('Home', '/'),
              ('About Us', '/pages/about-us.html'),
-             ('Our Mission', '/pages/our-mission.html'),)
+             ('Our Mission', '/pages/our-mission.html'),
+             ('Subscribe', '/pages/subscribe.html'),)
 
 DISPLAY_PAGES_ON_MENU = False
 DISPLAY_CATEGORIES_ON_MENU = False
